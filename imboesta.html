@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Imposter Spel</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>🕵️ IMPOSTER</h1>
+        <p class="subtitle">Ontdek wie de imposter is!</p>
+
+        <!-- Home Screen -->
+        <div id="homeScreen" class="screen active">
+            <div class="card">
+                <h2 style="margin-bottom: 20px;">Welkom!</h2>
+                <button class="btn btn-primary" onclick="showScreen('setupScreen')">🎮 Nieuw Spel</button>
+                <button class="btn btn-secondary" onclick="showScreen('rulesScreen')">📖 Spelregels</button>
+                <button class="btn btn-secondary" onclick="showStats()">📊 Statistieken</button>
+                <button class="btn btn-secondary" onclick="manageSavedPlayers()">👥 Beheer Spelers</button>
+            </div>
+        </div>
+
+        <!-- Setup Screen -->
+        <div id="setupScreen" class="screen">
+            <div class="card">
+                <h2 style="margin-bottom: 20px;">Spelers Toevoegen</h2>
+                
+                <div id="savedPlayersSection" style="display: none;" class="info-box" style="margin-bottom: 15px;">
+                    <strong>💾 Opgeslagen Spelers:</strong>
+                    <button class="btn btn-primary" onclick="loadSavedPlayers()" style="margin-top: 10px;">📥 Laad Vorige Spelers</button>
+                </div>
+
+                <input type="text" id="playerNameInput" placeholder="Speler naam" onkeypress="if(event.key==='Enter') addPlayer()">
+                <button class="btn btn-primary" onclick="addPlayer()">➕ Voeg Toe</button>
+                
+                <ul id="playerList" class="player-list"></ul>
+                
+                <div class="info-box">
+                    <strong>Totaal spelers:</strong> <span id="playerCount">0</span>
+                </div>
+
+                <div class="settings-group">
+                    <label class="settings-label">Aantal Imposters:</label>
+                    <div class="counter-control">
+                        <button class="counter-btn" onclick="changeImposterCount(-1)">-</button>
+                        <div class="counter-value" id="imposterCountDisplay">1</div>
+                        <button class="counter-btn" onclick="changeImposterCount(1)">+</button>
+                    </div>
+                    <div id="crewInfo" class="info-box" style="margin-top: 10px;">
+                        <strong>Crew leden:</strong> <span id="crewCount">0</span>
+                    </div>
+                </div>
+
+                <div class="settings-group">
+                    <label class="settings-label">Imposter Type:</label>
+                    <div class="info-box" style="margin-bottom: 10px;">
+                        💡 Kies hoe de imposter speelt
+                    </div>
+                    <div style="display: grid; gap: 10px;">
+                        <label style="display: flex; align-items: center; background: #f5f5f5; padding: 15px; border-radius: 12px; cursor: pointer; border: 3px solid #f5f5f5;" onclick="selectImposterType('normal')">
+                            <input type="radio" name="imposterType" value="normal" checked style="margin-right: 10px; width: 20px; height: 20px;">
+                            <div>
+                                <strong>🔴 Normale Imposter</strong><br>
+                                <span style="font-size: 0.9em; color: #666;">Kent het woord NIET - krijgt alleen een hint</span>
+                            </div>
+                        </label>
+                        <label style="display: flex; align-items: center; background: #f5f5f5; padding: 15px; border-radius: 12px; cursor: pointer; border: 3px solid #f5f5f5;" onclick="selectImposterType('alternative')">
+                            <input type="radio" name="imposterType" value="alternative" style="margin-right: 10px; width: 20px; height: 20px;">
+                            <div>
+                                <strong>🟠 Alternatieve Imposter</strong><br>
+                                <span style="font-size: 0.9em; color: #666;">Kent een ANDER woord uit dezelfde categorie</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="settings-group">
+                    <label class="settings-label">Kies Categorieën:</label>
+                    <div class="info-box" style="margin-bottom: 10px;">
+                        💡 Klik op categorieën om ze te <strong>activeren</strong>. Alleen de <strong>paarse</strong> categorieën worden gebruikt!
+                    </div>
+                    <div id="categoryContainer" class="category-container"></div>
+                    <button class="btn btn-secondary" onclick="selectAllCategories()" style="margin-top: 10px;">✅ Selecteer Alles</button>
+                    <button class="btn btn-secondary" onclick="deselectAllCategories()" style="margin-top: 10px;">❌ Deselecteer Alles</button>
+                </div>
+
+                <div class="warning" id="setupWarning">
+                    ⚠️ Minimaal 3 spelers en 1 imposter nodig
+                </div>
+
+                <button class="btn btn-success" onclick="startGame()" id="startGameBtn" disabled>🚀 Start Spel</button>
+                <button class="btn btn-secondary" onclick="showScreen('homeScreen')">← Terug</button>
+            </div>
+        </div>
+
+        <!-- Role Reveal Screen -->
+        <div id="roleScreen" class="screen">
+            <div class="card">
+                <div class="role-card">
+                    <h3 style="margin-bottom: 20px;">Speler aan de beurt:</h3>
+                    <div class="stat-number" style="color: #333;" id="currentPlayerName"></div>
+                    <div class="info-box" style="margin-top: 20px;">
+                        Geef de telefoon aan deze speler en laat alleen deze persoon op de knop drukken!
+                    </div>
+                    <button class="btn btn-primary" onclick="revealRole()" id="revealBtn" style="margin-top: 30px;">👁️ Bekijk Rol</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Role Display Screen -->
+        <div id="roleDisplayScreen" class="screen">
+            <div class="card">
+                <div class="role-card">
+                    <div id="roleContent"></div>
+                    <div class="warning" style="margin-top: 20px;">
+                        ⚠️ Laat niemand anders je scherm zien!
+                    </div>
+                    <button class="btn btn-primary" onclick="nextPlayer()" id="nextPlayerBtn" style="margin-top: 20px;"></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="gameScreen" class="screen">
+            <div class="card">
+                <h2 style="text-align: center; margin-bottom: 20px;">🎮 Spel Bezig</h2>
+                
+                <div class="stats">
+                    <div class="stat-box">
+                        <div class="stat-number" id="totalPlayers">0</div>
+                        <div class="stat-label">Totaal Spelers</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number" id="totalImposters">0</div>
+                        <div class="stat-label">Imposters</div>
+                    </div>
+                </div>
+
+                <div class="stats">
+                    <div class="stat-box">
+                        <div class="stat-number" id="totalCrew">0</div>
+                        <div class="stat-label">Crew Leden</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number" id="gameTimer">0:00</div>
+                        <div class="stat-label">Tijd</div>
+                    </div>
+                </div>
+
+                <div class="location">
+                    <div class="location-title">Het Geheime Woord</div>
+                    <div class="location-name" id="gameLocation"></div>
+                    <div class="category-badge" id="gameCategory"></div>
+                </div>
+
+                <div class="info-box">
+                    💡 <strong>Tip:</strong> De crew kent het woord, de imposter niet. Stel slimme vragen!
+                </div>
+
+                <button class="btn btn-success" onclick="showGameEndOptions()">✅ Spel Afgelopen</button>
+                <button class="btn btn-secondary" onclick="showPlayers()">👥 Toon Spelers</button>
+            </div>
+        </div>
+
+        <!-- Game End Options -->
+        <div id="gameEndScreen" class="screen">
+            <div class="card">
+                <h2 style="text-align: center; margin-bottom: 20px;">🏁 Spel Beëindigd</h2>
+                
+                <div class="info-box" style="text-align: center; margin-bottom: 20px;">
+                    <strong>Het geheime woord was:</strong><br>
+                    <div style="font-size: 1.5em; font-weight: 800; color: #667eea; margin-top: 10px;" id="revealedWord"></div>
+                    <div class="category-badge" id="revealedCategory"></div>
+                </div>
+
+                <div class="role-description" style="text-align: center; margin-bottom: 20px;">
+                    Wie heeft er gewonnen?
+                </div>
+
+                <button class="btn btn-success" onclick="crewWonPlayAgain()">🟢 Crew Wint - Speel Opnieuw</button>
+                <button class="btn btn-danger" onclick="imposterWonPlayAgain()">🔴 Imposter Wint - Speel Opnieuw</button>
+                <button class="btn btn-secondary" onclick="endGameCompletely()">🛑 Beëindig Spel</button>
+            </div>
+        </div>
+
+        <!-- Manage Players Screen -->
+        <div id="managePlayersScreen" class="screen">
+            <div class="card">
+                <h2 style="margin-bottom: 20px;">👥 Beheer Spelers</h2>
+                <div id="managedPlayersList"></div>
+                <button class="btn btn-danger" onclick="clearAllSavedPlayers()">🗑️ Verwijder Alle Spelers</button>
+                <button class="btn btn-primary" onclick="showScreen('homeScreen')">← Terug</button>
+            </div>
+        </div>
+
+        <!-- Rules Screen -->
+        <div id="rulesScreen" class="screen">
+            <div class="card">
+                <h2 style="margin-bottom: 20px;">📖 Spelregels</h2>
+                <div class="role-description" style="text-align: left;">
+                    <p style="margin-bottom: 15px;"><strong>Doel van het spel:</strong></p>
+                    <p style="margin-bottom: 15px;">• <strong>Crew:</strong> Ontdek wie de imposter is door vragen te stellen over het geheime woord</p>
+                    <p style="margin-bottom: 15px;">• <strong>Imposter:</strong> Blijf onopgemerkt en probeer het woord te raden</p>
+                    
+                    <p style="margin: 20px 0 15px 0;"><strong>Hoe te spelen:</strong></p>
+                    <p style="margin-bottom: 15px;">1. Elke speler ziet geheim zijn/haar rol</p>
+                    <p style="margin-bottom: 15px;">2. De crew kent het woord, de imposter niet</p>
+                    <p style="margin-bottom: 15px;">3. Stel elkaar vragen in een rondje</p>
+                    <p style="margin-bottom: 15px;">4. Stem wie de imposter is!</p>
+                    <p style="margin-bottom: 15px;">5. <strong>Crew wint:</strong> Als ze de imposter vinden</p>
+                    <p style="margin-bottom: 15px;">6. <strong>Imposter wint:</strong> Als ze het woord goed raden of onopgemerkt blijven</p>
+                </div>
+                <button class="btn btn-primary" onclick="showScreen('homeScreen')">← Terug</button>
+            </div>
+        </div>
+
+        <!-- Stats Screen -->
+        <div id="statsScreen" class="screen">
+            <div class="card">
+                <h2 style="margin-bottom: 20px;">📊 Statistieken</h2>
+                <div class="stats">
+                    <div class="stat-box">
+                        <div class="stat-number" id="gamesPlayed">0</div>
+                        <div class="stat-label">Gespeeld</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number" id="crewWins">0</div>
+                        <div class="stat-label">Crew Wins</div>
+                    </div>
+                </div>
+                <div class="stats">
+                    <div class="stat-box">
+                        <div class="stat-number" id="imposterWins">0</div>
+                        <div class="stat-label">Imposter Wins</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number" id="totalTime">0</div>
+                        <div class="stat-label">Minuten</div>
+                    </div>
+                </div>
+                <button class="btn btn-danger" onclick="resetStats()">🗑️ Reset Statistieken</button>
+                <button class="btn btn-primary" onclick="showScreen('homeScreen')">← Terug</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
