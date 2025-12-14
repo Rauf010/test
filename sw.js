@@ -9,6 +9,7 @@ const ASSETS = [
   "./icon-512.png"
 ];
 
+
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
 });
