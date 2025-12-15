@@ -14,7 +14,7 @@
         let alternativeWord = ''; // Voor alternatieve imposter
 
 
-        // Categorie informatie
+        // Categorie information
 const categoryInfo = {
     games: { emoji: '🎮', name: 'Games' },
     sport: { emoji: '⚽', name: 'Sport' },
