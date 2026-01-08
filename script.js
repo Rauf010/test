@@ -39,7 +39,7 @@ const hintWords = {
     muziek: ['Geluid', 'Artiest', 'Song', 'Concert', 'Beat'],
     geloof: ['Religie', 'Traditie', 'Ceremonie', 'Feest', 'Heilig'],
     manwha: ['Chapter', 'Protagonist', 'Story', 'Panel', 'Series'],
-    beroemdheden: ['Bekend', 'Beroemd', 'Persoon', 'Celebrity', 'Ster']
+    beroemdheden: ['Bekend', 'Beroemd', 'Persoon', 'Wereldwijd', 'Ster']
 };
 
 // Database met woorden per categorie (100 per categorie)
@@ -48,11 +48,11 @@ const database = {
         'Minecraft', 'Fortnite', 'Call of Duty', 'FIFA', 'GTA',
         'The Legend of Zelda', 'Mario Kart', 'Among Us', 'Roblox', 'Pokemon',
         'League of Legends', 'Valorant', 'Overwatch', 'Apex Legends', 'Rocket League',
-        'CS:GO', 'Dota 2', 'World of Warcraft', 'The Witcher', 'Skyrim',
+        'CS:GO', 'PES', 'World of Warcraft', 'The Witcher', 'Skyrim',
         'Red Dead Redemption', 'Spider-Man', 'God of War', 'Halo', 'Destiny',
         'Minecraft Dungeons', 'Animal Crossing', 'Sims', 'Assassins Creed', 'Far Cry',
         'Elden Ring', 'Dark Souls', 'Fallout', 'Mass Effect', 'Dragon Age',
-        'Final Fantasy', 'Persona', 'Metroid', 'Kirby', 'Donkey Kong',
+        'Final Fantasy', 'Persona', 'Black Myth-Wukong', 'Kirby', 'Donkey Kong',
         'Crash Bandicoot', 'Spyro', 'Sonic', 'Mega Man', 'Street Fighter',
         'Mortal Kombat', 'Tekken', 'Pac-Man', 'Tetris', 'Candy Crush',
         'Battlefield', 'Rainbow Six Siege', 'Warzone', 'PUBG', 'Rust',
@@ -60,11 +60,11 @@ const database = {
         'Celeste', 'Cuphead', 'Undertale', 'Deltarune', 'Hades',
         'Dead Cells', 'Binding of Isaac', 'Enter the Gungeon', 'Slay the Spire', 'Risk of Rain',
         'Portal', 'Half-Life', 'Left 4 Dead', 'Team Fortress', 'Bioshock',
-        'Dishonored', 'Prey', 'Deathloop', 'Ghostwire Tokyo', 'Resident Evil',
+        'Dishonored', 'Lethal Company', 'Deathloop', 'Ghostwire Tokyo', 'Resident Evil',
         'Silent Hill', 'Dead Space', 'Alien Isolation', 'Outlast', 'Amnesia',
         'Five Nights at Freddys', 'Phasmophobia', 'Dead by Daylight', 'Friday the 13th', 'Evil Dead',
         'Hitman', 'Metal Gear Solid', 'Splinter Cell', 'Watch Dogs', 'Sleeping Dogs',
-        'Saints Row', 'Just Cause', 'Mafia', 'LA Noire', 'Max Payne'
+        'Risk', 'Monopoly', 'Mafia', 'Valorant', 'Overwatch'
     ],
     sport: [
         'Voetbal', 'Tennis', 'Basketbal', 'Volleybal', 'Handbal',
@@ -79,11 +79,11 @@ const database = {
         'Rolschaatsen', 'Inline Skaten', 'Hardlopen', 'Wandelen', 'Fitness',
         'Crossfit', 'Powerlifting', 'Bodybuilding', 'Wrestling', 'MMA',
         'UFC', 'Muay Thai', 'Taekwondo', 'Krav Maga', 'Capoeira',
-        'Fencing', 'Archery', 'Schieten', 'Biathlon', 'Triathlon',
-        'Marathon', 'Sprint', 'Horden', 'Hoogspringen', 'Verspringen',
+        'Fencing', 'Archery', 'BJJ', 'Biathlon', 'Triathlon',
+        'Marathon', 'Horden', 'Hoogspringen', 'Verspringen',
         'Polsstokhoogspringen', 'Kogelstoten', 'Discuswerpen', 'Speerwerpen', 'Hamerslingeren',
-        'Waterpolo', 'Synchroonzwemmen', 'Schoonspringen', 'Reddend Zwemmen', 'Surfreddend',
-        'Beachvolleybal', 'Beachsoccer', 'Ultimate Frisbee', 'Lacrosse', 'Polo',
+        'Waterpolo', 'Synchroonzwemmen', 'Schoonspringen', 'Reddend Zwemmen',
+        'Beachvolleybal', 'Beachsoccer', 'Ultimate Frisbee', 'Lacrosse', 'WaterPolo',
         'Curling', 'Bobslee', 'Skeleton', 'Rodelen', 'Langlaufen',
         'Schansspringen', 'Noordse Combinatie', 'Freestyle Skiën', 'Snowboard Cross', 'Halfpipe',
         'Wielerbaan', 'BMX Racing', 'Mountainbike', 'Trial', 'Cyclocross'
@@ -95,7 +95,7 @@ const database = {
         'Jujutsu Kaisen', 'Chainsaw Man', 'Spy x Family', 'Mob Psycho', 'Haikyuu',
         'Gintama', 'Code Geass', 'Steins Gate', 'Cowboy Bebop', 'Neon Genesis Evangelion',
         'Pokemon', 'Digimon', 'Yu-Gi-Oh', 'Beyblade', 'Bakugan',
-        'Sailor Moon', 'Cardcaptor Sakura', 'Inuyasha', 'Ranma', 'Fruit Basket',
+        'Sailor Moon', 'Horimiya', 'Inuyasha', 'Ranma', 'Fruit Basket',
         'Ouran High School', 'Clannad', 'Your Lie in April', 'Anohana', 'A Silent Voice',
         'Violet Evergarden', 'Made in Abyss', 'Re:Zero', 'Konosuba', 'Overlord',
         'The Rising of the Shield Hero', 'That Time I Got Reincarnated as a Slime', 'Mushoku Tensei', 'Classroom of the Elite', 'Horimiya',
