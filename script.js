@@ -653,8 +653,8 @@ const database = {
                             Probeer onopgemerkt te blijven en raad het woord door slimme vragen te stellen.
                         </div>
                         <div class="location" style="background: #ff9800;">
-                            <div class="location-title">💡 Hint Woord</div>
-                            <div class="location-name" style="font-size: 1.3em;">${hintWord}</div>
+                            <div class="location-title">💡 Category</div>
+                            <div class="location-name" style="font-size: 1.3em;">${gameCategory}</div>
                         </div>
                         <div class="info-box" style="margin-top: 15px;">
                             ℹ️ Dit hint woord is gerelateerd aan de categorie, maar niet het echte woord!
@@ -873,3 +873,24 @@ const database = {
             initializeCategories();
             checkSavedPlayers();
         });
+
+        // Nieuwe ronde starten (zelfde als crewWonPlayAgain maar zonder stats)
+function playNewRound() {
+    playAgainAfterWin(); // gebruikt bestaande reset logica
+}
+
+// Onthul imposters
+function revealImposters() {
+    const box = document.getElementById('impostersRevealBox');
+    
+    if (imposters.length === 0) {
+        box.innerHTML = "Geen imposters gevonden.";
+    } else {
+        box.innerHTML = `
+            <strong>🔴 De Imposter${imposters.length > 1 ? 's waren' : ' was'}:</strong><br><br>
+            ${imposters.map(name => `• ${name}`).join('<br>')}
+        `;
+    }
+    
+    box.style.display = 'block';
+}
